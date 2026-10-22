@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020617; /* slate-950 */
+  --foreground: #f8fafc; /* slate-50 */
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---------- Clickpdf.online custom effects ---------- */
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-x {
+  background-size: 200% auto;
+  animation: gradient-x 5s ease infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 18px rgba(37, 99, 235, 0.35), 0 0 55px rgba(37, 99, 235, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(37, 99, 235, 0.65), 0 0 90px rgba(37, 99, 235, 0.3);
+  }
+}
+.animate-glow-pulse {
+  animation: glow-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -18px, 0) scale(1.04); }
+}
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse at top, black, transparent 70%);
+  mask-image: radial-gradient(ellipse at top, black, transparent 70%);
+}
