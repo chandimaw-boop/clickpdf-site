@@ -144,6 +144,24 @@ export default function RootLayout({
           data-cfasync="false"
           strategy="afterInteractive"
         />
+
+        {/* Adsterra 728x90 Banner Ad Script Options */}
+        <Script id="adsterra-banner-options" strategy="beforeInteractive">
+          {`
+            atOptions = {
+              'key' : '1dd11752bf2ceba9ddd9909d8775aaed',
+              'format' : 'iframe',
+              'height' : 90,
+              'width' : 728,
+              'params' : {}
+            };
+          `}
+        </Script>
+        <Script
+          id="adsterra-banner-script"
+          src="https://bauval.org/22/1dd11752bf2ceba9ddd9909d8775aaed"
+          strategy="afterInteractive"
+        />
       </head>
       <body className="min-h-full bg-slate-950 font-sans text-slate-50 antialiased">
         <script
