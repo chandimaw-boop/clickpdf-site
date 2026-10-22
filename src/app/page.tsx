@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   CheckCircle2,
   ChevronDown,
@@ -83,51 +83,70 @@ const FAQS = [
   },
 ];
 
-// Paste the "invoke.js" URL from your Adsterra Popunder zone below.
-const ADSTERRA_POPUNDER_URL = "";
+// --- ADSTERRA BANNER COMPONENTS ---
 
-let adsterraInvoked = false;
+function HeaderBannerAd() {
+  const adRef = useRef<HTMLDivElement>(null);
 
-function triggerAdsterraPopunder() {
-  if (typeof window === "undefined") return;
+  useEffect(() => {
+    if (adRef.current && !adRef.current.firstChild) {
+      const scriptOption = document.createElement("script");
+      scriptOption.type = "text/javascript";
+      scriptOption.innerHTML = `
+        atOptions = {
+          'key' : '1dd11752bf2ceba9ddd9909d8775aaed',
+          'format' : 'iframe',
+          'height' : 90,
+          'width' : 728,
+          'params' : {}
+        };
+      `;
 
-  if (!ADSTERRA_POPUNDER_URL) {
-    if (process.env.NODE_ENV !== "production") {
-      console.info(
-        "[Clickpdf.online] Adsterra popunder trigger fired — set ADSTERRA_POPUNDER_URL to activate."
-      );
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://bauval.org/22/1dd11752bf2ceba9ddd9909d8775aaed";
+
+      adRef.current.appendChild(scriptOption);
+      adRef.current.appendChild(script);
     }
-    return;
-  }
+  }, []);
 
-  if (adsterraInvoked) return;
-  adsterraInvoked = true;
-
-  const script = document.createElement("script");
-  script.type = "text/javascript";
-  script.async = true;
-  script.src = ADSTERRA_POPUNDER_URL;
-  document.head.appendChild(script);
+  return (
+    <div className="flex justify-center items-center overflow-hidden min-h-[90px] w-full">
+      <div ref={adRef} />
+    </div>
+  );
 }
 
-function AdSlot({
-  id,
-  label,
-  className = "",
-}: {
-  id: string;
-  label: string;
-  className?: string;
-}) {
+function FooterStickyAd() {
+  const adRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (adRef.current && !adRef.current.firstChild) {
+      const scriptOption = document.createElement("script");
+      scriptOption.type = "text/javascript";
+      scriptOption.innerHTML = `
+        atOptions = {
+          'key' : '8e2718801e3ad6350116ce85f026474c',
+          'format' : 'iframe',
+          'height' : 50,
+          'width' : 320,
+          'params' : {}
+        };
+      `;
+
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "https://bauval.org/22/8e2718801e3ad6350116ce85f026474c";
+
+      adRef.current.appendChild(scriptOption);
+      adRef.current.appendChild(script);
+    }
+  }, []);
+
   return (
-    <div
-      id={id}
-      data-adsterra-slot={id}
-      className={`flex items-center justify-center rounded-xl border border-dashed border-slate-700/60 bg-slate-900/40 text-slate-500 ${className}`}
-    >
-      <span className="px-4 py-3 text-center text-[10px] font-semibold uppercase tracking-[0.25em]">
-        {label} · Adsterra
-      </span>
+    <div className="flex justify-center items-center overflow-hidden min-h-[50px]">
+      <div ref={adRef} />
     </div>
   );
 }
@@ -140,13 +159,30 @@ export default function Home() {
   const selectedWorkflow =
     WORKFLOWS.find((w) => w.id === selectedId) ?? WORKFLOWS[0];
 
+  // Global Popunder සහ Social Bar Scripts එකපාරක් Load කිරීම
+  useEffect(() => {
+    // Popunder Script
+    const popunder = document.createElement("script");
+    popunder.type = "text/javascript";
+    popunder.src = "https://abscloud.org/1/c88cf487cd8d2bcfaa9e47782ee451bb";
+    popunder.setAttribute("data-cfasync", "false");
+    document.head.appendChild(popunder);
+
+    // Social Bar Script
+    const socialBar = document.createElement("script");
+    socialBar.type = "text/javascript";
+    socialBar.src = "https://bauval.org/14/95c55355a71563c1eb4efdc6ec845564";
+    socialBar.setAttribute("data-cfasync", "false");
+    document.head.appendChild(socialBar);
+  }, []);
+
   const handleSelect = (id: string) => {
     setSelectedId(id);
     document.getElementById("tools")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div id="top" className="relative min-h-screen overflow-x-hidden pb-20">
+    <div id="top" className="relative min-h-screen overflow-x-hidden pb-24">
       {/* Decorative background */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[120px]" />
@@ -155,13 +191,9 @@ export default function Home() {
         <div className="bg-grid absolute inset-0" />
       </div>
 
-      {/* Header ad space */}
+      {/* Header 728x90 Adsterra Ad Space */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-4 sm:px-6">
-        <AdSlot
-          id="header-ad"
-          label="728×90 · Header"
-          className="min-h-[60px] sm:min-h-[90px]"
-        />
+        <HeaderBannerAd />
       </div>
 
       {/* Header */}
@@ -194,7 +226,6 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <a
               href="#tools"
-              onClick={() => triggerAdsterraPopunder()}
               className="hidden items-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition-all hover:bg-blue-500 hover:shadow-blue-500/40 sm:inline-flex"
             >
               <Zap className="h-4 w-4" />
@@ -451,9 +482,9 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Sticky bottom ad / social bar */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-800/70 bg-slate-950/85 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      {/* Sticky bottom ad / 320x50 Adsterra Ad */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-800/70 bg-slate-950/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6">
           <div className="flex items-center gap-3">
             <span className="hidden text-xs font-medium text-slate-400 sm:inline">
               Follow us
@@ -470,11 +501,8 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <AdSlot
-            id="sticky-social-ad"
-            label="320×50 · Sticky"
-            className="min-h-[40px] min-w-[180px] sm:min-w-[320px]"
-          />
+          {/* Footer 320x50 Banner */}
+          <FooterStickyAd />
         </div>
       </div>
     </div>
