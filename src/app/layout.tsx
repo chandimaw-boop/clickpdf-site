@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -120,9 +121,30 @@ const faqJsonLd = {
   ],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
+      <head>
+        {/* Adsterra Popunder Ad Script */}
+        <Script
+          id="adsterra-popunder"
+          src="https://abscloud.org/1/c88cf487cd8d2bcfaa9e47782ee451bb"
+          data-cfasync="false"
+          strategy="afterInteractive"
+        />
+
+        {/* Adsterra Social Bar Ad Script */}
+        <Script
+          id="adsterra-socialbar"
+          src="https://bauval.org/14/95c55355a71563c1eb4efdc6ec845564"
+          data-cfasync="false"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="min-h-full bg-slate-950 font-sans text-slate-50 antialiased">
         <script
           type="application/ld+json"
