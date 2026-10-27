@@ -169,7 +169,7 @@ export default function RootLayout({
             />
           </div>
 
-          <p className="text-xs text-slate-400">© {new Date().getFullYear()} Clickpdf.online - All Rights Reserved.</p>
+          <p className="text-xs text-slate-400">© 2026 Clickpdf.online - All Rights Reserved.</p>
         </footer>
 
       </body>
