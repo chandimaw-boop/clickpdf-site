@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -57,6 +58,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
+      <head>
+        {/* 1. Adsterra Smart Popunder Code (Adsterra එකෙන් දුන්න Key එක 'YOUR_ADSTERRA_POPUNDER_KEY' වෙනුවට දාන්න) */}
+        <Script
+          id="adsterra-popunder-config"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              atOptions = {
+                'key' : 'YOUR_ADSTERRA_POPUNDER_KEY',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+              };
+            `,
+          }}
+        />
+        <Script
+          id="adsterra-popunder-script"
+          src="//www.highperformanceformat.com/YOUR_ADSTERRA_POPUNDER_KEY/invoke.js"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="min-h-full bg-slate-950 font-sans text-slate-50 antialiased">
         {children}
       </body>
