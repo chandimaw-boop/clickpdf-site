@@ -7,10 +7,10 @@ interface SmartTabunderProps {
 }
 
 export default function SmartTabunder({
-  directLink = 'https://www.highrevenuegate.com/YOUR_ACTUAL_ADSTERRA_LINK',
+  directLink = 'https://araplhn.org/4/fa15e2c728c19c6f9a55268c4d552e69',
 }: SmartTabunderProps) {
   useEffect(() => {
-    // 24 Hours Frequency Cap Check
+    // 24 Hours Frequency Cap Check (User ට වදයක් නොවී එක පාරක් විතරක් Open වීමට)
     const hasOpenedToday = localStorage.getItem('adsterra_tabunder_opened');
     const now = new Date().getTime();
 
@@ -18,21 +18,20 @@ export default function SmartTabunder({
       return;
     }
 
-    const handleGlobalClick = (e: MouseEvent) => {
+    const handleGlobalClick = () => {
       try {
-        const currentUrl = window.location.href;
+        // Direct Link එක New Tab එකකින් Open කිරීම
+        const popTab = window.open(directLink, '_blank');
 
-        // 1. Ad Tab එක Open කිරීම
-        const adTab = window.open(directLink, '_blank');
+        if (popTab) {
+          // Ad Tab එක පසුපසට యවා Main Site එක Screen එකේ උඩින්ම තැබීම
+          popTab.blur();
+          window.focus();
 
-        // 2. Main Site එක ඊළඟ තත්පරයේම Re-focus කර උඩට ගැනීම
-        if (adTab) {
-          window.open(currentUrl, '_self');
-
-          // Frequency Cap එක Save කිරීම
+          // Frequency Cap Timestamp එක Save කිරීම
           localStorage.setItem('adsterra_tabunder_opened', new Date().getTime().toString());
 
-          // Event Listener එක අයින් කිරීම
+          // එක පාරක් Open වුණු පසු Listener එක අයින් කිරීම
           window.removeEventListener('click', handleGlobalClick);
         }
       } catch (err) {
