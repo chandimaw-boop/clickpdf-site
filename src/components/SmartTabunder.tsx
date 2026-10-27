@@ -10,7 +10,7 @@ export default function SmartTabunder({
   directLink = 'https://www.highrevenuegate.com/YOUR_ACTUAL_ADSTERRA_LINK',
 }: SmartTabunderProps) {
   useEffect(() => {
-    // පැය 24කට එක පාරක් විතරක් වැටෙන්න Frequency Cap එක
+    // පැය 24කට එක පාරක් විතරක් Open වීම තහවුරු කිරීමට Frequency Cap Check එක
     const hasOpenedToday = localStorage.getItem('adsterra_tabunder_opened');
     const now = new Date().getTime();
 
@@ -19,28 +19,27 @@ export default function SmartTabunder({
     }
 
     const handleGlobalClick = (e: MouseEvent) => {
-      // 1. Invisible Anchor Element එකක් හදාගැනීම
-      const a = document.createElement('a');
-      a.href = directLink;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
+      try {
+        // Real User Click එකේදීම Direct Link එක New Tab එකක Open කිරීම
+        const popTab = window.open(directLink, '_blank');
 
-      // 2. Click Event එක Trigger කර ලින්ක් එක Open කිරීම
-      const clickEvent = new MouseEvent('click', {
-        view: window,
-        bubbles: true,
-        cancelable: true,
-      });
+        if (popTab) {
+          // Ad Tab එක පසුපසට යවා Main Site එක Screen එකේ උඩින්ම තැබීම
+          popTab.blur();
+          window.focus();
 
-      a.dispatchEvent(clickEvent);
+          // Frequency Cap එක Save කිරීම
+          localStorage.setItem('adsterra_tabunder_opened', new Date().getTime().toString());
 
-      // 3. Frequency Cap එක Save කිරීම
-      localStorage.setItem('adsterra_tabunder_opened', new Date().getTime().toString());
-
-      // එක පාරක් Open වුණු පසු Event එක Cancel කිරීම
-      window.removeEventListener('click', handleGlobalClick);
+          // එක පාරක් Open වුණු පසු Event Listener එක අයින් කිරීම
+          window.removeEventListener('click', handleGlobalClick);
+        }
+      } catch (err) {
+        console.error('Tabunder error:', err);
+      }
     };
 
+    // User ගේ ප්‍රථම Click එකේදීම Trigger වීමට Event Listener එක එකතු කිරීම
     window.addEventListener('click', handleGlobalClick, { once: true });
 
     return () => {
