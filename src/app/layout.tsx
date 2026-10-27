@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
-import SmartTabunder from "@/components/SmartTabunder";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -58,11 +58,30 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
+      <head>
+        {/* Adsterra Social Bar Code (User Friendly + High CPM) */}
+        <Script
+          id="adsterra-social-bar"
+          src="//www.highperformanceformat.com/YOUR_SOCIAL_BAR_KEY/invoke.js"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="min-h-full bg-slate-950 font-sans text-slate-50 antialiased">
-        {/* Adsterra Background Smart Tabunder Component එක (උඹේ Adsterra Direct Link එක මෙතනට දාන්න) */}
-        <SmartTabunder directLink="https://www.highrevenuegate.com/YOUR_ACTUAL_ADSTERRA_LINK" />
+        {/* Top Native Banner Container */}
+        <div className="w-full flex justify-center py-2 bg-slate-900 border-b border-slate-800">
+          <div id="container-adsterra-top">
+            {/* Adsterra 728x90 Banner Code එක මෙතනට */}
+          </div>
+        </div>
 
         {children}
+
+        {/* Bottom Banner Container */}
+        <div className="w-full flex justify-center py-2 bg-slate-900 border-t border-slate-800">
+          <div id="container-adsterra-bottom">
+            {/* Adsterra 320x50 Banner Code එක මෙතනට */}
+          </div>
+        </div>
       </body>
     </html>
   );
